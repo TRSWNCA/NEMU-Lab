@@ -46,9 +46,12 @@ static int cmd_si(char *args) {
 static int cmd_x(char *args) {
   char *arg = strtok(args, " ");
   if (arg == NULL) return puts("Wrong args!!"), 1;
-  int n = atoi(arg);
+  //int n = atoi(arg);
   arg = strtok(NULL, " "); // second arg
   if (arg == NULL) return puts("Wrong args!!"), 1;
+  bool success = false;
+  expr(arg, &success);
+  /*
   int i, j; swaddr_t startadd;
   sscanf(arg, "%x", &startadd);
   for (i = 0; i < n; ++ i) {
@@ -58,6 +61,7 @@ static int cmd_x(char *args) {
       printf("0x%02x ", ls & 0xff);
     putchar(10);
   }
+  */
   return 0;
 }
 
