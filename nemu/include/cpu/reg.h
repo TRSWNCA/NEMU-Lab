@@ -15,53 +15,51 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  */
 
 typedef struct {
-     union {
-       union {
-		uint32_t _32;
-		uint16_t _16;
-		uint8_t _8[2];
-       } gpr[8];
-       
-       struct {
-     uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
-       };
-       
-     };
+  union {
+    union {
+      uint32_t _32;
+      uint16_t _16;
+      uint8_t _8[2];
+    } gpr[8];
 
-     /* Do NOT change the order of the GPRs' definitions. */
+    struct {
+      uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+    };
+  };
 
+  /* Do NOT change the order of the GPRs' definitions. */
 
-     swaddr_t eip;
-     
-     union {
-		struct {
-			uint32_t CF		:1;
-			uint32_t pad0	:1;
-			uint32_t PF		:1;
-			uint32_t pad1	:1;
-			uint32_t AF		:1;
-			uint32_t pad2	:1;
-			uint32_t ZF		:1;
-			uint32_t SF		:1;
-			uint32_t TF		:1;
-			uint32_t IF		:1;
-			uint32_t DF		:1;
-			uint32_t OF		:1;
-			uint32_t IOPL	:2;
-			uint32_t NT		:1;
-			uint32_t pad3	:1;
-			uint16_t pad4;
-		};
-		uint32_t val;
-	} eflags;
+  swaddr_t eip;
+
+  union {
+    struct {
+      uint32_t CF : 1;
+      uint32_t pad0 : 1;
+      uint32_t PF : 1;
+      uint32_t pad1 : 1;
+      uint32_t AF : 1;
+      uint32_t pad2 : 1;
+      uint32_t ZF : 1;
+      uint32_t SF : 1;
+      uint32_t TF : 1;
+      uint32_t IF : 1;
+      uint32_t DF : 1;
+      uint32_t OF : 1;
+      uint32_t IOPL : 2;
+      uint32_t NT : 1;
+      uint32_t pad3 : 1;
+      uint16_t pad4;
+    };
+    uint32_t val;
+  } eflags;
 
 } CPU_state;
 
 extern CPU_state cpu;
 
 static inline int check_reg_index(int index) {
-	assert(index >= 0 && index < 8);
-	return index;
+  assert(index >= 0 && index < 8);
+  return index;
 }
 
 #define reg_l(index) (cpu.gpr[check_reg_index(index)]._32)
