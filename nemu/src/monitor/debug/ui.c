@@ -51,7 +51,7 @@ static int cmd_x(char *args) {
   if (arg == NULL) return puts("Wrong args!!"), 1;
   bool success = false; int i, j;
   swaddr_t startadd = startadd = expr(arg, &success);
-  if (!success) panic("Error expr!");
+  if (!success) return puts("Error expr!"), 1;
   for (i = 0; i < n; ++ i) {
     uint32_t ls = swaddr_read(startadd + i * 4, 4);
     printf("0x%08x: ", startadd + i * 4);
@@ -74,7 +74,7 @@ static int cmd_info(char *args) {
   } else if (args[0] == 'w') {
     info_wp();
   } else {
-    panic("Wrong args!!!");
+    return puts("Wrong args!!!"), 1;
   }
   return 0;
 }
