@@ -79,6 +79,18 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_w(char *args) {
+  if (args == NULL) return puts("Wrong args!!"), 1;
+	WP * f; bool suc;
+	f = new_wp();
+	f -> val = expr(args, &suc);
+	if (!suc)
+	  Assert(1, "ERROR\n");
+	printf("W: %d %s\n", f -> val, args);
+	strcpy(f -> expr, args);
+	return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -90,7 +102,7 @@ static struct {
   { "si", "Steps through N instructions and then pauses, When N is not given, the default is 1.", cmd_si },
   { "x", "Read from the address", cmd_x },
   { "info", "Print all registers", cmd_info },
-
+  { "w", "Add watch point", cmd_w },
   /* TODO: Add more commands */
 
 };
