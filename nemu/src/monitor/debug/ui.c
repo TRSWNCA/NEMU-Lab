@@ -81,14 +81,14 @@ static int cmd_info(char *args) {
 
 static int cmd_w(char *args) {
   if (args == NULL) return puts("Wrong args!!"), 1;
-	WP * f; bool suc;
-	f = new_wp();
-	f -> val = expr(args, &suc);
-	if (!suc)
-	  Assert(1, "ERROR\n");
-	printf("Hint watchpoint %d at address 0x%x\n", f -> NO, f -> val);
-	strcpy(f -> expr, args);
-	return 0;
+  WP * f; bool suc;
+  f = new_wp();
+  f -> val = expr(args, &suc);
+  if (!suc)
+    Assert(1, "ERROR\n");
+  printf("Hint watchpoint %d at address 0x%x\n", f -> NO, f -> val);
+  strcpy(f -> expr, args);
+  return 0;
 }
 static int cmd_d(char * args) {
   if (args == NULL) return puts("Wrong args!!"), 1;
