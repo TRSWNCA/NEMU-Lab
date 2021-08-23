@@ -86,9 +86,14 @@ static int cmd_w(char *args) {
 	f -> val = expr(args, &suc);
 	if (!suc)
 	  Assert(1, "ERROR\n");
-	printf("Hint watchpoint %d at address %x\n", f -> NO, f -> val);
+	printf("Hint watchpoint %d at address 0x%x\n", f -> NO, f -> val);
 	strcpy(f -> expr, args);
 	return 0;
+}
+static int cmd_d(char * args) {
+  if (args == NULL) return puts("Wrong args!!"), 1;
+  delete_wp(atoi(args));
+  return 0;
 }
 
 static struct {
@@ -103,6 +108,7 @@ static struct {
   { "x", "Read from the address", cmd_x },
   { "info", "Print all registers", cmd_info },
   { "w", "Add watch point", cmd_w },
+  { "d", "Delete watch point", cmd_d }
   /* TODO: Add more commands */
 
 };
