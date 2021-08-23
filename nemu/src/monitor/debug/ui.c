@@ -46,13 +46,18 @@ static int cmd_si(char *args) {
 static int cmd_x(char *args) {
 	char *arg = strtok(args, " ");
   if (arg == NULL) return puts("Wrong args!!"), 1;
-  //int n = atoi(arg);
+  int n = atoi(arg);
   arg = strtok(NULL, " "); // second arg
   if (arg == NULL) return puts("Wrong args!!"), 1;
-  //int i, j; 
-  swaddr_t startadd;
+  int i, j; swaddr_t startadd;
   sscanf(arg, "%x", &startadd);
-  printf("%x", startadd);
+	for (i = 0; i < n; ++ i) {
+		uint32_t ls = swaddr_read(startadd + i * 4, 4);
+		printf("0x%08x: ", startadd + i * 4);
+		for (j = 0; j < 4; ++ j, ls >>= 8)
+			printf("0x%02x ", ls & 0xff);
+    putchar(10);
+	}
 	return 0;
 }
 
