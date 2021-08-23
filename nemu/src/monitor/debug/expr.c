@@ -245,9 +245,11 @@ uint32_t eval(int l, int r) {
       case OR:
         return val1 || val2;
       default:
-        assert(0);
+        break;
     }
   }
+  assert(1);
+  return -1;
 }
 
 uint32_t expr(char *e, bool *success) {
