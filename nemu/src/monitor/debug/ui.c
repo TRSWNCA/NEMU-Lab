@@ -28,8 +28,7 @@ char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-  printf("read: %d", atoi(args));
-	//cpu_exec(-1);
+	cpu_exec(atoi(args));
 	return 0;
 }
 
