@@ -1,5 +1,6 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
+#include "nemu.h"
 
 #define NR_WP 32
 
@@ -93,7 +94,7 @@ bool check_wp() {
     if (!suc)
       Assert(1, "REEOR\n");
     if (ls != f -> val) {
-      printf("Watchpoint %d hit, expr = %s:\n", f -> NO, f -> expr);
+      printf("Hit watchpoint %d at 0x%x", f -> NO, cpu.eip);
       printf("old value: %d\n", f -> val);
       printf("new value: %d\n", ls);
       f -> val = ls;

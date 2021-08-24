@@ -86,7 +86,7 @@ static int cmd_w(char *args) {
   if (!suc)
     Assert(1, "ERROR\n");
   strcpy(f -> expr, args);
-  printf("Watchpoint created: Watchpoint %d: %s = %d\n", f -> NO, f -> expr, f -> val);
+  printf("Watchpoint created: Watchpoint %d: %s = 0x%x\n", f -> NO, f -> expr, f -> val);
   return 0;
 }
 
