@@ -50,7 +50,8 @@ static int cmd_x(char *args) {
   arg = strtok(NULL, " "); // second arg
   if (arg == NULL) return puts("Wrong args!!"), 1;
   bool success = false;
-  expr(arg, &success);
+  int d = expr(arg, &success);
+  Log("%d", d);
   /*
   int i, j; swaddr_t startadd;
   sscanf(arg, "%x", &startadd);
