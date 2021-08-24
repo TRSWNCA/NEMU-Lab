@@ -114,6 +114,142 @@ static bool make_token(char *e) {
 	return true; 
 }
 
+bool check_parentheses(int l, int r) {
+	int i, flag = 0;
+	if (tokens[l].type !=  '(' || tokens[r].type != ')')
+		return false;
+	for (i = l; i <= r; ++ i) {
+		if (tokens[i].type == '(')
+			flag++;
+		else if (tokens[i].type == ')')
+			flag--;
+		if (flag == 0 && i < r)
+			return false;
+	}
+	if (flag != 0)
+		return false;
+	return true;
+}
+
+
+
+int dominant_operator(int l, int r) {
+  int i, pos = l;
+  int ls = 10, flag = 0;
+  for (i = l; i <= r; ++ i) {
+    if (tokens[i].type == DEX || tokens[i].type == HEX || tokens[i].type == REGISTER)
+      continue;
+    if (tokens[i].type == '(') {
+      flag ++; i ++;
+      while (1) {
+        if (tokens[i].type == '(')
+          flag ++;
+        else if (tokens[i].type == ')')
+          flag--;
+        if (flag == 0)
+          break;
+        i ++;
+      }
+    }
+    if (tokens[i].prior <= ls) {
+      ls = tokens[i].prior;
+      pos = i;
+    }
+  }
+  return pos;
+}
+
+uint32_t eval(int l, int r) {
+  if (l > r) {
+    Assert(l > r, "ERROR\n");
+    return 0;
+  } else if (l == r) {
+    uint32_t num = 0;
+    // printf("str: %d\n", tokens[l].type);
+    if (tokens[l].type == DEX)
+      sscanf(tokens[l].str, "%d", &num);
+    if (tokens[l].type == HEX)
+      sscanf(tokens[l].str, "%x", &num);
+    // printf("num %d\n", num);
+    if (tokens[l].type == REGISTER) {
+      int i;
+      uint32_t len = strlen(tokens[l].str);
+      if (len == 3) {
+        for (i = R_EAX; i <= R_EDI; ++ i)
+          if (!strcmp(tokens[l].str, regsl[i]))
+            break;
+        if (i > R_EDI)
+          if (!strcmp(tokens[l].str, "eip"))
+            num = cpu.eip;
+          else Assert(1, "ERROR\n");
+        else num = reg_l(i);
+        // printf("233 %d %d\n", num, i);
+      }
+      if (len == 2) {
+        if (tokens[l].str[1] == 'x' || tokens[l].str[1] == 'p' || tokens[l].str[1] == 'i') {
+          for (i = R_AX; i <= R_DI; ++ i) {
+            if (!strcmp(tokens[l].str, regsw[i]))
+              break;
+          }
+          num = reg_w(i);
+        }
+        else if (tokens[l].str[1] == 'l' || tokens[l].str[1] == 'h') {
+          for (i = R_AL; i <= R_BH; ++ i) {
+            if (!strcmp(tokens[l].str, regsb[i]))
+              break;
+          }
+          num = reg_b(i);
+        }
+        else assert(1);
+      }
+    }
+    // printf("%d\n", num);
+    return num;
+  }
+  else if (check_parentheses(l, r) == true) {
+    return eval(l + 1, r - 1);
+  }
+  else {
+    int op = dominant_operator(l, r);
+    // printf("op: %d\n", op);
+    if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
+      uint32_t ls = eval(l + 1, r);
+      switch (tokens[l].type) {
+        case POINTER:
+          return swaddr_read(ls, 4);
+        case MINUS:
+          return -ls;
+        case '!':
+          return !ls;
+        default:
+          Assert(1, "ERROE");
+      }
+    }
+    uint32_t val1 = eval(l, op - 1), val2 = eval(op + 1, r);
+    // printf("val1 %d, val2 %d, l %d, r %d\n", val1, val2, l, r);
+    switch (tokens[op].type) {
+      case '+':
+        return val1 + val2;
+      case '-':
+        return val1 - val2;
+      case '*':
+        return val1 * val2;
+      case '/':
+        return val1 / val2;
+      case EQ:
+        return val1 == val2;
+      case NEQ:
+        return val1 != val2;
+      case AND:
+        return val1 && val2;
+      case OR:
+        return val1 || val2;
+      default:
+        assert(0);
+    }
+  }
+}
+
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
@@ -121,7 +257,23 @@ uint32_t expr(char *e, bool *success) {
 	}
 
 	/* TODO: Insert codes to evaluate the expression. */
-	panic("please implement me");
-	return 0;
+  int i;
+  for (i = 0; i < nr_token; i++) {
+    if (i == 0 || (tokens[i - 1].type >= DEX && tokens[i - 1].type <= REGISTER && tokens[i - 1].type != ')')) {
+      if (tokens[i].type == '*') {
+        tokens[i].type = POINTER;
+        tokens[i].prior = 6;
+      }
+      if (tokens[i].type == '-') {
+        tokens[i].type = MINUS;
+        tokens[i].prior = 6;
+      }
+    }
+    // printf("%s %d\n", tokens[i].str, tokens[i].type);
+  }
+
+  /* TODO: Insert codes to evaluate the expression. */
+  *success = true;
+  return eval(0, nr_token - 1);
 }
 
