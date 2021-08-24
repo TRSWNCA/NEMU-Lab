@@ -258,7 +258,7 @@ uint32_t eval(int l, int r, bool *succuess) {
         break;
     }
   }
-  assert(1);
+  *succuess = false;
   return -1;
 }
 
