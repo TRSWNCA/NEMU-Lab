@@ -43,6 +43,14 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+  if (args == NULL) return puts("Wrong args!!"), 1;
+	char *arg = strtok(args, " ");
+  int n = atoi(arg);
+  printf("%d", n);
+	return 0;
+}
+
 static struct {
 	char *name;
 	char *description;
@@ -52,6 +60,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
   { "si", "Steps through N instructions and then pauses, When N is not given, the default is 1.", cmd_si },
+  { "x", "Read from the address", cmd_x },
 
 	/* TODO: Add more commands */
 
