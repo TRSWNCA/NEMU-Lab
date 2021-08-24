@@ -207,9 +207,9 @@ uint32_t eval(int l, int r) {
     // printf("%d\n", num);
     return num;
   }
-  else if (check_parentheses(l, r) == true) {
-    return eval(l + 1, r - 1);
-  }
+  //else if (check_parentheses(l, r) == true) {
+    //return eval(l + 1, r - 1);
+  //}
   else {
     int op = dominant_operator(l, r);
     Log("op: %d", op);
