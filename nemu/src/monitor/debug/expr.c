@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ
+  NOTYPE = 256, EQ, NEQ, AND, OR, MINUS, POINTER, DEX, HEX, REGISTER
 
 	/* TODO: Add more token types */
 
@@ -15,16 +15,27 @@ enum {
 
 static struct rule {
 	char *regex;
-	int token_type;
+	int token_type, prior;
 } rules[] = {
 
 	/* TODO: Add more rules.
 	 * Pay attention to the precedence level of different rules.
 	 */
-
-	{" +",	NOTYPE},				// spaces
-	{"\\+", '+'},					// plus
-	{"==", EQ}						// equal
+	{"\\b0[xX][0-9a-fA-F]+\\b", HEX, 0},
+	{"\\b[0-9]+\\b", DEX, 0},
+	{"\\$[a-zA-Z]+", REGISTER, 0},
+	{" +",	NOTYPE, 0},				// spaces
+	{"\\+", '+', 4},					// plus
+	{"-", '-', 4},                //jian
+	{"\\*", '*', 5},             //cheng
+	{"/", '/', 5},                 //chu
+	{"==", EQ, 3},						// equal
+	{"!=", NEQ, 3},          //budneg
+	{"!", '!', 6},
+	{"&&", AND, 2},       ///AND
+	{"\\|\\|", OR, 1},      //or
+	{"\\(", '(', 7},
+	{"\\)", ')', 7},
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -51,6 +62,7 @@ void init_regex() {
 typedef struct token {
 	int type;
 	char str[32];
+  int prior;
 } Token;
 
 Token tokens[32];
@@ -70,17 +82,24 @@ static bool make_token(char *e) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
 
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        char *ls = e + position + 1;
+				//Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
 				 * to record the token in the array `tokens'. For certain types
 				 * of tokens, some extra actions should be performed.
 				 */
-
-				switch(rules[i].token_type) {
-					default: panic("please implement me");
+				if (rules[i].token_type == REGISTER) {
+					strncpy(tokens[nr_token].str, ls, substr_len - 1);
+					tokens[nr_token].str[substr_len-1] = '\0';
+				} else {
+					strncpy(tokens[nr_token].str, substr_start, substr_len);
+					tokens[nr_token].str[substr_len] = '\0';
 				}
+				tokens[nr_token].type = rules[i].token_type;
+				tokens[nr_token].prior = rules[i].prior;
+				nr_token++;
 
 				break;
 			}
