@@ -74,6 +74,10 @@ void delete_wp(int num) {
 void info_wp() {
   WP * f;
   f = head;
+  if (f == NULL) {
+    puts("No watchpoints currently set.");
+    return;
+  }
   while (f != NULL) {
     printf("%d: %s = %d\n", f -> NO, f -> expr, f -> val);
     f = f -> next;
