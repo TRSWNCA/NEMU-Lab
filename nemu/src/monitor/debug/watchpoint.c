@@ -96,6 +96,7 @@ bool check_wp() {
       printf("Watchpoint %d hit, expr = %s:\n", f -> NO, f -> expr);
       printf("old value: %d\n", f -> val);
       printf("new value: %d\n", ls);
+      f -> val = ls;
       flag = 0;
     }
     f = f -> next;
