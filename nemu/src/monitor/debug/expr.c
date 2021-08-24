@@ -83,7 +83,7 @@ static bool make_token(char *e) {
         int substr_len = pmatch.rm_eo;
 
         char *ls = e + position + 1;
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        //Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -137,7 +137,6 @@ int dominant_operator(int l, int r) {
   int i, pos = l;
   int ls = 10, flag = 0;
   for (i = l; i <= r; ++ i) {
-    Log("%d", i);
     if (tokens[i].type == DEX || tokens[i].type == HEX || tokens[i].type == REGISTER)
       continue;
     if (tokens[i].type == '(') {
@@ -216,7 +215,7 @@ uint32_t eval(int l, int r) {
   }
   else {
     int op = dominant_operator(l, r);
-    Log("op: %d", op);
+    //Log("op: %d", op);
     if (op == -1) {
       Assert(0, "missing ')' or '('");
     }
@@ -267,7 +266,7 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  Log("make_token success");
+  //Log("make_token success");
   int i;
   for (i = 0; i < nr_token; i++) {
     if (i == 0 || (tokens[i - 1].type < DEX && tokens[i - 1].type > REGISTER && tokens[i - 1].type != ')')) {
