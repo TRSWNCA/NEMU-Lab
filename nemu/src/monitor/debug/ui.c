@@ -44,10 +44,15 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_x(char *args) {
-  if (args == NULL) return puts("Wrong args!!"), 1;
 	char *arg = strtok(args, " ");
-  int n = atoi(arg);
-  printf("%d", n);
+  if (arg == NULL) return puts("Wrong args!!"), 1;
+  //int n = atoi(arg);
+  arg = strtok(NULL, " "); // second arg
+  if (arg == NULL) return puts("Wrong args!!"), 1;
+  //int i, j; 
+  swaddr_t startadd;
+  sscanf(arg, "%x", &startadd);
+  printf("%x", startadd);
 	return 0;
 }
 
