@@ -218,7 +218,7 @@ uint32_t eval(int l, int r) {
     int op = dominant_operator(l, r);
     Log("op: %d", op);
     if (op == -1) {
-      Assert(1, "missing ')' or '('");
+      Assert(0, "missing ')' or '('");
     }
     if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
       uint32_t ls = eval(l + 1, r);
