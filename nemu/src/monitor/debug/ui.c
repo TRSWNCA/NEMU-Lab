@@ -61,6 +61,14 @@ static int cmd_x(char *args) {
 	return 0;
 }
 
+static int cmd_info(char *args) {
+  if (args == NULL) return puts("Wrong args!!"), 1;
+  if (args[0] == 'r') {
+		printf("CPU_EIP: %d\n", cpu.eip);
+  }
+  return 0;
+}
+
 static struct {
 	char *name;
 	char *description;
@@ -71,6 +79,7 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
   { "si", "Steps through N instructions and then pauses, When N is not given, the default is 1.", cmd_si },
   { "x", "Read from the address", cmd_x },
+  { "info", "Print all registers", cmd_info },
 
 	/* TODO: Add more commands */
 
