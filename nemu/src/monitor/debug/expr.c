@@ -222,7 +222,8 @@ uint32_t eval(int l, int r) {
         case '!':
           return !ls;
         default:
-          Assert(1, "ERROE");
+          puts("NO");
+          //Assert(1, "ERROER");
       }
     }
     uint32_t val1 = eval(l, op - 1), val2 = eval(op + 1, r);
