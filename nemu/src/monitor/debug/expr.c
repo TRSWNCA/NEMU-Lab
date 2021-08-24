@@ -260,6 +260,7 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+  Log("make_token success");
   int i;
   for (i = 0; i < nr_token; i++) {
     if (i == 0 || (tokens[i - 1].type < DEX && tokens[i - 1].type > REGISTER && tokens[i - 1].type != ')')) {
