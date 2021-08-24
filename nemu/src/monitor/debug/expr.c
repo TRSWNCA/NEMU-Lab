@@ -212,14 +212,14 @@ uint32_t eval(int l, int r) {
     return num;
   }
   else if (check_parentheses(l, r) == true) {
-    //return eval(l + 1, r - 1);
+    return eval(l + 1, r - 1);
   }
   else {
     int op = dominant_operator(l, r);
+    Log("op: %d", op);
     if (op == -1) {
       Assert(1, "missing ')' or '('");
     }
-    //Log("op: %d", op);
     if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
       uint32_t ls = eval(l + 1, r);
       switch (tokens[l].type) {
