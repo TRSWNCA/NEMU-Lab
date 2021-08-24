@@ -137,6 +137,7 @@ int dominant_operator(int l, int r) {
   int i, pos = l;
   int ls = 10, flag = 0;
   for (i = l; i <= r; ++ i) {
+    Log("%d", i);
     if (tokens[i].type == DEX || tokens[i].type == HEX || tokens[i].type == REGISTER)
       continue;
     if (tokens[i].type == '(') {
@@ -207,9 +208,9 @@ uint32_t eval(int l, int r) {
     // printf("%d\n", num);
     return num;
   }
-  //else if (check_parentheses(l, r) == true) {
+  else if (check_parentheses(l, r) == true) {
     //return eval(l + 1, r - 1);
-  //}
+  }
   else {
     int op = dominant_operator(l, r);
     Log("op: %d", op);
