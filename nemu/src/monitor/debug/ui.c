@@ -45,10 +45,10 @@ static int cmd_si(char *args) {
 
 static int cmd_x(char *args) {
   char *arg = strtok(args, " ");
-  if (arg == NULL) panic("Wrong args!!");
+  if (arg == NULL) return puts("Wrong args!!"), 1;
   int n = atoi(arg);
   arg = strtok(NULL, " "); // second arg
-  if (arg == NULL) panic("Wrong args!!");
+  if (arg == NULL) return puts("Wrong args!!"), 1;
   bool success = false; int i, j;
   swaddr_t startadd = startadd = expr(arg, &success);
   if (!success) panic("Error expr!");
@@ -63,7 +63,7 @@ static int cmd_x(char *args) {
 }
 
 static int cmd_info(char *args) {
-  if (args == NULL) panic("Wrong args!!");
+  if (args == NULL) return puts("Wrong args!!"), 1;
   if (args[0] == 'r') {
     printf("CPU_EIP: %d\n", cpu.eip);
     int i;
@@ -80,7 +80,7 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_w(char *args) {
-  if (args == NULL) panic("Wrong args!!");
+  if (args == NULL) return puts("Wrong args!!"), 1;
   WP * f; bool suc;
   f = new_wp();
   f -> val = expr(args, &suc);
@@ -91,7 +91,7 @@ static int cmd_w(char *args) {
   return 0;
 }
 static int cmd_d(char * args) {
-  if (args == NULL) panic("Wrong args!!");
+  if (args == NULL) return puts("Wrong args!!"), 1;
   delete_wp(atoi(args));
   return 0;
 }
