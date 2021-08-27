@@ -96,6 +96,15 @@ static int cmd_d(char * args) {
   return 0;
 }
 
+static int cmd_p(char * args) {
+  if (args == NULL) return puts("Wrong args!!"), 1;
+  bool success = false;
+  uint32_t ans = expr(args, &success);
+  if (!success) return puts("Error expr!"), 1;
+  printf("%s = %d\n", args, ans);
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -109,7 +118,7 @@ static struct {
   { "info", "Print all registers", cmd_info },
   { "w", "Add watch point", cmd_w },
   { "d", "Delete watch point", cmd_d },
-  //{ "p", "Evaluate an expression on the current thread", cmd_p }
+  { "p", "Evaluate an expression on the current thread", cmd_p }
   /* TODO: Add more commands */
 
 };
