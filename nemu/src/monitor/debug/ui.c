@@ -49,17 +49,15 @@ static int cmd_x(char *args) {
   int n = atoi(arg);
   arg = strtok(NULL, " "); // second arg
   if (arg == NULL) return puts("Wrong args!!"), 1;
-  bool success = false; int i;// j;
+  bool success = false; int i;
   swaddr_t startadd = expr(arg, &success);
   if (!success) return puts("Error expr!"), 1;
   for (i = 0; i < n; ++ i) {
     uint32_t ls = swaddr_read(startadd + i * 4, 4);
     if (i % 4 == 0) printf("0x%08x: ", startadd + i * 4);
     printf("0x%08x%c", ls, " \n"[i % 4 == 3]);
-    //for (j = 0; j < 4; ++ j, ls >>= 8)
-      //printf("0x%02x ", ls & 0xff);
   }
-  //uint32_t ls = swaddr_read(startadd + i * 4, 4);
+  putchar(10);
   return 0;
 }
 
