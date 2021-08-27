@@ -93,7 +93,9 @@ bool check_wp() {
     if (!suc)
       Assert(1, "REEOR\n");
     if (ls != f -> val) {
-      printf("W %d %s\tOld: %d, New: %d\n", f -> NO, f -> expr, f -> val, ls);
+      printf("Watchpoint %d hit, expr = %s:\n", f -> NO, f -> expr);
+      printf("old value: %d\n", f -> val);
+      printf("new value: %d\n", ls);
       flag = 0;
     }
     f = f -> next;

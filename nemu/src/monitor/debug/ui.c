@@ -89,6 +89,7 @@ static int cmd_w(char *args) {
   strcpy(f -> expr, args);
   return 0;
 }
+
 static int cmd_d(char * args) {
   if (args == NULL) return puts("Wrong args!!"), 1;
   delete_wp(atoi(args));
@@ -107,7 +108,8 @@ static struct {
   { "x", "Read from the address", cmd_x },
   { "info", "Print all registers", cmd_info },
   { "w", "Add watch point", cmd_w },
-  { "d", "Delete watch point", cmd_d }
+  { "d", "Delete watch point", cmd_d },
+  //{ "p", "Evaluate an expression on the current thread", cmd_p }
   /* TODO: Add more commands */
 
 };
