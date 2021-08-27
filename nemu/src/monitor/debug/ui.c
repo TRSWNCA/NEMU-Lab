@@ -85,8 +85,8 @@ static int cmd_w(char *args) {
   f -> val = expr(args, &suc);
   if (!suc)
     Assert(1, "ERROR\n");
-  printf("Hint watchpoint %d at address 0x%x\n", f -> NO, f -> val);
   strcpy(f -> expr, args);
+  printf("Watchpoint created: Watchpoint %d: %s = %d\n", f -> NO, f -> expr, f -> val);
   return 0;
 }
 
