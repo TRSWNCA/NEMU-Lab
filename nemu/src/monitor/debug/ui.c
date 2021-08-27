@@ -49,16 +49,18 @@ static int cmd_x(char *args) {
   int n = atoi(arg);
   arg = strtok(NULL, " "); // second arg
   if (arg == NULL) return puts("Wrong args!!"), 1;
-  bool success = false; int i, j;
+  bool success = false; int i;// j;
   swaddr_t startadd = expr(arg, &success);
   if (!success) return puts("Error expr!"), 1;
   for (i = 0; i < n; ++ i) {
     uint32_t ls = swaddr_read(startadd + i * 4, 4);
     printf("0x%08x: ", startadd + i * 4);
-    for (j = 0; j < 4; ++ j, ls >>= 8)
-      printf("0x%02x ", ls & 0xff);
+    printf("0x%08x", ls);
+    //for (j = 0; j < 4; ++ j, ls >>= 8)
+      //printf("0x%02x ", ls & 0xff);
     putchar(10);
   }
+  //uint32_t ls = swaddr_read(startadd + i * 4, 4);
   return 0;
 }
 
@@ -69,7 +71,7 @@ static int cmd_info(char *args) {
     int i;
     for (i = 0; i < 8; ++ i) {
       //printf("%s: %08x\t%s: %04x\t%s: %02x\n", regsl[i], reg_l(i), regsw[i], reg_w(i), regsb[i], reg_b(i));
-      printf("%s\t%08x\t%d\n", regsl[i], reg_l(i), reg_l(i));
+      printf("%s\t0x%08x\t%d\n", regsl[i], reg_l(i), reg_l(i));
     }
   } else if (args[0] == 'w') {
     info_wp();
