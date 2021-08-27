@@ -67,7 +67,6 @@ static int cmd_info(char *args) {
   if (args[0] == 'r') {
     printf("CPU_EIP: %d\n", cpu.eip);
     int i;
-    puts("regsl:");
     for (i = 0; i < 8; ++ i) {
       printf("%s: %08x\t%s: %04x\t%s: %02x\n", regsl[i], reg_l(i), regsw[i], reg_w(i), regsb[i], reg_b(i));
     }
