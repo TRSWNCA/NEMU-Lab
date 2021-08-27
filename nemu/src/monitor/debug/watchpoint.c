@@ -94,7 +94,7 @@ bool check_wp() {
     if (!suc)
       Assert(1, "REEOR\n");
     if (ls != f -> val) {
-      printf("Hit watchpoint %d at 0x%x\n", f -> NO, cpu.eip);
+      printf("Hit watchpoint %d at 0x%x:\n", f -> NO, cpu.eip);
       printf("old value: %d (0x%x)\n", f -> val, f -> val);
       printf("new value: %d (0x%x)\n", ls, ls);
       f -> val = ls;
