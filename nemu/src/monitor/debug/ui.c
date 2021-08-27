@@ -65,10 +65,11 @@ static int cmd_x(char *args) {
 static int cmd_info(char *args) {
   if (args == NULL) return puts("Wrong args!!"), 1;
   if (args[0] == 'r') {
-    printf("CPU_EIP: %d\n", cpu.eip);
+    // printf("CPU_EIP: %d\n", cpu.eip);
     int i;
     for (i = 0; i < 8; ++ i) {
-      printf("%s: %08x\t%s: %04x\t%s: %02x\n", regsl[i], reg_l(i), regsw[i], reg_w(i), regsb[i], reg_b(i));
+      //printf("%s: %08x\t%s: %04x\t%s: %02x\n", regsl[i], reg_l(i), regsw[i], reg_w(i), regsb[i], reg_b(i));
+      printf("%s\t%08x\t%d\n", regsl[i], reg_l(i), reg_l(i));
     }
   } else if (args[0] == 'w') {
     info_wp();
