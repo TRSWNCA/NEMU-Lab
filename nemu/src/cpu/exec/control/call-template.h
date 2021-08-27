@@ -9,6 +9,7 @@ make_helper(concat(call_i_, SUFFIX)) {
   Log("%d", reg_l(R_ESP));
   swaddr_write(reg_l(R_ESP), 4, cpu.eip + len);
   DATA_TYPE_S lsval = op_src -> val;
+  Log("%x", lsval);
   print_asm("call: %x", cpu.eip + 1 + len + lsval);
   cpu.eip += lsval;
   return len + 1;
