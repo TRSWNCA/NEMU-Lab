@@ -162,7 +162,7 @@ int dominant_operator(int l, int r) {
   return pos;
 }
 
-uint32_t eval(int l, int r) {
+uint32_t eval(int l, int r, bool *succuess) {
   //Log("%d %d", l, r);
   if (l > r) {
     Assert(l > r, "ERROR\n");
@@ -211,16 +211,17 @@ uint32_t eval(int l, int r) {
     return num;
   }
   else if (check_parentheses(l, r) == true) {
-    return eval(l + 1, r - 1);
+    return eval(l + 1, r - 1, succuess);
   }
   else {
     int op = dominant_operator(l, r);
     //Log("op: %d", op);
     if (op == -1) {
-      Assert(0, "missing ')' or '('");
+      *succuess = false;
+      return -1;
     }
     if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
-      uint32_t ls = eval(l + 1, r);
+      uint32_t ls = eval(l + 1, r, succuess);
       switch (tokens[l].type) {
         case POINTER:
           return swaddr_read(ls, 4);
@@ -229,10 +230,12 @@ uint32_t eval(int l, int r) {
         case '!':
           return !ls;
         default:
-          Assert(1, "ERROER");
+          *succuess = false;
+          return -1;
+          //Assert(1, "ERROER");
       }
     }
-    uint32_t val1 = eval(l, op - 1), val2 = eval(op + 1, r);
+    uint32_t val1 = eval(l, op - 1, succuess), val2 = eval(op + 1, r, succuess);
     // printf("val1 %d, val2 %d, l %d, r %d\n", val1, val2, l, r);
     switch (tokens[op].type) {
       case '+':
@@ -284,6 +287,6 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   *success = true;
-  return eval(0, nr_token - 1);
+  return eval(0, nr_token - 1, success);
 }
 
