@@ -142,7 +142,7 @@ int dominant_operator(int l, int r) {
       continue;
     if (tokens[i].type == '(') {
       flag ++; i ++;
-      while (1) {
+      while (i <= r) {
         if (tokens[i].type == '(')
           flag ++;
         else if (tokens[i].type == ')')
@@ -150,6 +150,9 @@ int dominant_operator(int l, int r) {
         if (flag == 0)
           break;
         i ++;
+      }
+      if (flag) {
+        return -1;
       }
     }
     if (tokens[i].prior <= ls) {
@@ -213,7 +216,10 @@ uint32_t eval(int l, int r) {
   }
   else {
     int op = dominant_operator(l, r);
-    Log("op: %d", op);
+    if (op == -1) {
+      Assert(1, "missing ')' or '('");
+    }
+    //Log("op: %d", op);
     if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
       uint32_t ls = eval(l + 1, r);
       switch (tokens[l].type) {
@@ -224,8 +230,7 @@ uint32_t eval(int l, int r) {
         case '!':
           return !ls;
         default:
-          puts("NO");
-          //Assert(1, "ERROER");
+          Assert(1, "ERROER");
       }
     }
     uint32_t val1 = eval(l, op - 1), val2 = eval(op + 1, r);
