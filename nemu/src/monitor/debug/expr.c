@@ -215,7 +215,7 @@ uint32_t eval(int l, int r, bool *succuess) {
   }
   else {
     int op = dominant_operator(l, r);
-    //Log("op: %d", op);
+    Log("op: %d", op);
     if (op == -1) {
       *succuess = false;
       return -1;
