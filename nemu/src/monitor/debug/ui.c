@@ -54,11 +54,10 @@ static int cmd_x(char *args) {
   if (!success) return puts("Error expr!"), 1;
   for (i = 0; i < n; ++ i) {
     uint32_t ls = swaddr_read(startadd + i * 4, 4);
-    printf("0x%08x: ", startadd + i * 4);
-    printf("0x%08x", ls);
+    if (i % 4 == 0) printf("0x%08x: ", startadd + i * 4);
+    printf("0x%08x%c", ls, " \n"[i % 4 == 3]);
     //for (j = 0; j < 4; ++ j, ls >>= 8)
       //printf("0x%02x ", ls & 0xff);
-    putchar(10);
   }
   //uint32_t ls = swaddr_read(startadd + i * 4, 4);
   return 0;
