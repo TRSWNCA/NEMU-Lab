@@ -50,7 +50,7 @@ static int cmd_x(char *args) {
   arg = strtok(NULL, " "); // second arg
   if (arg == NULL) return puts("Wrong args!!"), 1;
   bool success = false; int i, j;
-  swaddr_t startadd = startadd = expr(arg, &success);
+  swaddr_t startadd = expr(arg, &success);
   if (!success) return puts("Error expr!"), 1;
   for (i = 0; i < n; ++ i) {
     uint32_t ls = swaddr_read(startadd + i * 4, 4);
