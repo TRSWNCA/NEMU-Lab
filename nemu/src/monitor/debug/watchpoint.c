@@ -34,6 +34,7 @@ WP * new_wp() {
       p = p -> next;
     p -> next = f;
   }
+  f -> check_eval = false;
   return f;
 }
 
@@ -93,7 +94,13 @@ bool check_wp() {
     uint32_t ls = expr(f -> expr, &suc);
     if (!suc)
       Assert(1, "REEOR\n");
-    if (ls != f -> val) {
+    if (f -> check_eval) {
+      if (ls == f -> eval) {
+        printf("Hint watchpoint %d at 0x%x:\n", f -> NO, cpu.eip);
+        printf("value: %d (0x%x)\n", ls, ls);
+        flag = 0;
+      }
+    } else if (ls != f -> val) {
       printf("Hint watchpoint %d at 0x%x:\n", f -> NO, cpu.eip);
       printf("old value: %d (0x%x)\n", f -> val, f -> val);
       printf("new value: %d (0x%x)\n", ls, ls);
