@@ -90,6 +90,10 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
+        if (substr_len > 32) { // in case str overflow
+          puts("Too Long expr!!!");
+          assert(0);
+        }
         if (rules[i].token_type == REGISTER) {
           strncpy(tokens[nr_token].str, ls, substr_len - 1);
           tokens[nr_token].str[substr_len-1] = '\0';
