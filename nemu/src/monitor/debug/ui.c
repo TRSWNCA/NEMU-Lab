@@ -97,7 +97,10 @@ static int cmd_w(char *args) {
     return puts("Wrong args!!"), 1;
   }
   strcpy(f -> expr, args);
-  printf("Watchpoint created: Watchpoint %d: %s = 0x%x\n", f -> NO, f -> expr, f -> val);
+  if (eval_flag)
+    printf("Watchpoint created: Watchpoint %d: %s\n", f -> NO, f -> expr);
+  else 
+    printf("Watchpoint created: Watchpoint %d: %s = 0x%x\n", f -> NO, f -> expr, f -> val);
   return 0;
 }
 
