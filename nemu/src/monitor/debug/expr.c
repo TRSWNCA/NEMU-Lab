@@ -90,7 +90,7 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-        if (substr_len > 32) {
+        if (substr_len > 32) { // in case str overflow
           puts("Too Long expr!!!");
           assert(0);
         }
