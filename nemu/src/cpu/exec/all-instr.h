@@ -18,6 +18,7 @@
 
 #include "control/jmp.h"
 #include "control/call.h"
+#include "control/push.h"
 
 #include "logic/and.h"
 #include "logic/or.h"
