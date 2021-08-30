@@ -94,6 +94,9 @@ static bool make_token(char *e) {
           puts("Too Long expr!!!");
           assert(0);
         }
+        if (rules[i].token_type == NOTYPE) {
+          break;
+        }
         if (rules[i].token_type == REGISTER) {
           strncpy(tokens[nr_token].str, ls, substr_len - 1);
           tokens[nr_token].str[substr_len-1] = '\0';
