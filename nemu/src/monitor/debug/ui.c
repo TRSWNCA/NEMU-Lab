@@ -88,7 +88,6 @@ static int cmd_w(char *args) {
       eval_flag = true;
       args[i] = '\0';
       f -> val = expr(args, &suc);
-      //args[i] = '=';
       f -> eval = expr(args + i + 2, &suc);
       f -> check_eval = true;
     }
