@@ -83,8 +83,9 @@ static int cmd_w(char *args) {
   WP * f; bool suc;
   f = new_wp();
   f -> val = expr(args, &suc);
-  if (!suc)
-    Assert(1, "ERROR\n");
+  if (!suc) {
+    return puts("Wrong args!!"), 1;
+  }
   strcpy(f -> expr, args);
   printf("Watchpoint created: Watchpoint %d: %s = 0x%x\n", f -> NO, f -> expr, f -> val);
   return 0;
