@@ -9,6 +9,8 @@ typedef struct watchpoint {
 
   /* TODO: Add more members if necessary */
   uint32_t val;
+  uint32_t eval;
+  bool check_eval;
   char expr[32];
 
 } WP;
