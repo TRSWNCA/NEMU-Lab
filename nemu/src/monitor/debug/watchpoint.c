@@ -95,7 +95,7 @@ bool check_wp() {
     if (!suc)
       Assert(1, "REEOR\n");
     if (f -> check_eval) {
-      if (ls != f -> eval) {
+      if (ls == f -> eval) {
         printf("Hint watchpoint %d at 0x%x:\n", f -> NO, cpu.eip);
         printf("value: %d (0x%x)\n", ls, ls);
         flag = 0;
