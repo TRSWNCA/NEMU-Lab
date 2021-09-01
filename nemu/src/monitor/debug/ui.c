@@ -81,7 +81,9 @@ static int cmd_info(char *args) {
 static int cmd_w(char *args) {
   if (args == NULL) return puts("Wrong args!!"), 1;
   WP * f; bool suc;
-  f = new_wp(); int i;
+  f = new_wp();
+  /*
+  int i;
   bool eval_flag = false;
   for (i = 0; args[i + 1] != '\0'; ++ i)
     if (args[i] == '=' && args[i + 1] == '=') {
@@ -91,14 +93,16 @@ static int cmd_w(char *args) {
       f -> eval = expr(args + i + 2, &suc);
       f -> check_eval = true;
     }
-  if (!eval_flag) f -> val = expr(args, &suc);
+  */
+  //if (!eval_flag)
+    f -> val = expr(args, &suc);
   if (!suc) {
     return puts("Wrong args!!"), 1;
   }
   strcpy(f -> expr, args);
-  if (eval_flag)
-    printf("Watchpoint created: Watchpoint %d: %s\n", f -> NO, f -> expr);
-  else 
+  //if (eval_flag)
+  //  printf("Watchpoint created: Watchpoint %d: %s\n", f -> NO, f -> expr);
+  //else 
     printf("Watchpoint created: Watchpoint %d: %s = 0x%x\n", f -> NO, f -> expr, f -> val);
   return 0;
 }
