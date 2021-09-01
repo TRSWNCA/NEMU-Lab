@@ -22,6 +22,7 @@
 #include "control/jbe.h"
 #include "control/je.h"
 #include "control/call.h"
+#include "control/leave.h"
 #include "control/push.h"
 #include "control/pop.h"
 #include "control/ret.h"
