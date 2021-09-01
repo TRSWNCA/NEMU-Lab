@@ -22,6 +22,7 @@
 #include "control/je.h"
 #include "control/call.h"
 #include "control/push.h"
+#include "control/pop.h"
 #include "control/ret.h"
 
 #include "logic/and.h"
