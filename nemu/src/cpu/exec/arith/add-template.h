@@ -9,6 +9,7 @@ void do_execute() {
 	cpu.eflags.CF = result < op_dest->val;
 	cpu.eflags.OF = MSB(~(op_dest->val ^ op_src->val) & (op_dest->val ^ result));
   print_asm_template2();
+  printf("%d + %d\n", op_dest -> val, op_src -> val);
 }
 
 #if DATA_BYTE == 2 || DATA_BYTE == 4
