@@ -3,14 +3,11 @@
 #define instr add
 
 void do_execute() {
-  DATA_TYPE res = op_dest -> val + op_src -> val;
-  OPERAND_W(op_dest, res);
-  update_eflags_pf_zf_sf(res);
-  int len = (DATA_BYTE << 3) - 1, s1, s2;
-  cpu.eflags.CF = (res < op_dest -> val);
-  s1 = op_dest -> val >> len;
-  s2 = op_src -> val >> len;
-  cpu.eflags.OF = (s1 == s2 && s1 != cpu.eflags.SF);
+  DATA_TYPE result = op_dest -> val + op_src -> val;
+  OPERAND_W(op_dest, result);
+  update_eflags_pf_zf_sf(result);
+	cpu.eflags.CF = result < op_dest->val;
+	cpu.eflags.OF = MSB(~(op_dest->val ^ op_src->val) & (op_dest->val ^ result));
   print_asm_template2();
 }
 
