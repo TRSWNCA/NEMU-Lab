@@ -75,4 +75,4 @@ submit: clean
 	cd .. && zip -r $(STU_ID).zip $(shell pwd | grep -o '[^/]*$$')
 
 count:
-	@find . -name "*\.[c|h]" | xargs cat | grep -v ^$$ | wc -l
+	@find nemu -name "*\.[c|h]" | xargs cat | grep -v ^$$ | wc -l
