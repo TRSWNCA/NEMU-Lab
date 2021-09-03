@@ -194,7 +194,7 @@ uint32_t eval(int l, int r, bool *succuess) {
             num = cpu.eip;
           else Assert(1, "ERROR\n");
         else num = reg_l(i);
-        // printf("233 %d %d\n", num, i);
+        printf("233 %d %d\n", num, i);
       }
       if (len == 2) {
         if (tokens[l].str[1] == 'x' || tokens[l].str[1] == 'p' || tokens[l].str[1] == 'i') {
@@ -243,7 +243,7 @@ uint32_t eval(int l, int r, bool *succuess) {
       }
     }
     uint32_t val1 = eval(l, op - 1, succuess), val2 = eval(op + 1, r, succuess);
-    // printf("val1 %d, val2 %d, l %d, r %d\n", val1, val2, l, r);
+    Log("val1 %d, val2 %d, l %d, r %d", val1, val2, l, r);
     switch (tokens[op].type) {
       case '+':
         return val1 + val2;
