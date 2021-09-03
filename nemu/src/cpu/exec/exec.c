@@ -20,17 +20,17 @@ static make_helper(_2byte_esc);
 	
 /* 0x80 */
 make_group(group1_b,
-	add_i2rm_b, inv, inv, inv, 
+	add_i2rm_b, inv, adc_i2rm_b, inv, 
 	and_i2rm_b, inv, inv, inv)
 
 /* 0x81 */
 make_group(group1_v,
-	add_i2rm_v, inv, inv, inv, 
+	add_i2rm_v, inv, adc_i2rm_v, inv, 
 	and_i2rm_v, sub_i2rm_v, inv, inv)
 
 /* 0x83 */
 make_group(group1_sx_v,
-	inv, or_si2rm_v, inv, inv, 
+	add_si2rm_v, or_si2rm_v, adc_si2rm_v, inv, 
 	and_si2rm_v, sub_si2rm_v, inv, cmp_si2rm_v)
 
 /* 0xc0 */
