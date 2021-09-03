@@ -214,7 +214,6 @@ uint32_t eval(int l, int r, bool *succuess) {
         else assert(1);
       }
     }
-    printf("num: %d\n", num);
     return num;
   }
   else if (check_parentheses(l, r) == true) {
@@ -292,9 +291,6 @@ uint32_t expr(char *e, bool *success) {
     }
     // printf("%s %d\n", tokens[i].str, tokens[i].type);
   }
-
-  for (i = 0; i < nr_token; ++ i)
-    printf("%d %d\n", i, tokens[i].type);
 
   /* TODO: Insert codes to evaluate the expression. */
   *success = true;
