@@ -170,7 +170,7 @@ int dominant_operator(int l, int r) {
 }
 
 uint32_t eval(int l, int r, bool *succuess) {
-  //Log("%d %d", l, r);
+  Log("%d %d", l, r);
   if (l > r) {
     Assert(l > r, "ERROR\n");
     return 0;
