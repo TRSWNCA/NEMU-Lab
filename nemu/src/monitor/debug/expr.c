@@ -229,6 +229,7 @@ uint32_t eval(int l, int r, bool *succuess) {
     }
     if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
       uint32_t ls = eval(l + 1, r, succuess);
+      Log("%d", ls);
       switch (tokens[l].type) {
         case POINTER:
           return swaddr_read(ls, 4);
