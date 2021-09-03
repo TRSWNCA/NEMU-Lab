@@ -23,7 +23,7 @@ static struct rule {
    */
   {"\\b0[xX][0-9a-fA-F]+\\b", HEX, 0},
   {"\\b[0-9]+\\b", DEX, 0},
-  {"\\$[a-zA-Z]+", REGISTER, 0},
+  {"\\$[a-zA-Z]+\\b", REGISTER, 0},
   {" +",	NOTYPE, 0},				// spaces
   {"\\+", '+', 4},					// plus
   {"-", '-', 4},                //jian
