@@ -294,6 +294,9 @@ uint32_t expr(char *e, bool *success) {
     // printf("%s %d\n", tokens[i].str, tokens[i].type);
   }
 
+  for (i = 0; i < nr_token; ++ i)
+    Log("%d", tokens[i].type);
+
   /* TODO: Insert codes to evaluate the expression. */
   *success = true;
   return eval(0, nr_token - 1, success);
