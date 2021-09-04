@@ -26,7 +26,7 @@ make_group(group1_b,
 /* 0x81 */
 make_group(group1_v,
 	add_i2rm_v, inv, adc_i2rm_v, inv, 
-	and_i2rm_v, sub_i2rm_v, inv, inv)
+	and_i2rm_v, sub_i2rm_v, inv, cmp_i2rm_v)
 
 /* 0x83 */
 make_group(group1_sx_v,
