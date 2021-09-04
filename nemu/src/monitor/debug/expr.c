@@ -274,6 +274,7 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
+  Log("%d", nr_token);
 
   /* TODO: Insert codes to evaluate the expression. */
   //Log("make_token success");
