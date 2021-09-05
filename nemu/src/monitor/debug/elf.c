@@ -8,6 +8,19 @@ static char *strtab = NULL;
 static Elf32_Sym *symtab = NULL;
 static int nr_symtab_entry;
 
+void getFrame(swaddr_t addr, char* s) {
+  int i;
+  for (i = 0; i < nr_symtab_entry; i++) {
+    int lslen;
+    if (symtab[i].st_value <= addr && symtab[i].st_value +  symtab[i].st_size >= addr && (symtab[i].st_info & 0xf) == STT_FUNC) {
+      lslen = symtab[i + 1].st_name - symtab[i].st_name - 1;
+      strncpy(s, strtab + symtab[i].st_name, lslen);
+      s [lslen] = '\0';
+      break;
+    }
+  }
+}
+
 void load_elf_tables(int argc, char *argv[]) {
 	int ret;
 	Assert(argc == 2, "run NEMU with format 'nemu [program]'");

@@ -1,6 +1,7 @@
 #include "monitor/monitor.h"
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
+#include "monitor/elf.h"
 #include "nemu.h"
 
 #include <stdlib.h>
@@ -122,6 +123,31 @@ static int cmd_p(char * args) {
   return 0;
 }
 
+static int cmd_bt(char* args) {
+  char a[50];
+  swaddr_t lsebp = reg_l(R_EBP);
+  swaddr_t lsret = cpu.eip;
+  int cnt = 0, i;
+  while (lsebp) {
+    cnt++;
+    printf("#%d  0x%08x ", cnt, lsret);
+    getFrame(lsret, a);
+    printf("%s \t", a);
+    printf("( ");
+    if (strcmp(a, "main") == 0)
+      printf(")\n");
+    else {
+      for (i = 0; i < 4; i++) {
+        printf("%d ", swaddr_read(lsebp + 8 + i * 4, 4));
+      }
+      puts(")");
+    }
+    lsret = swaddr_read(lsebp + 4, 4);
+    lsebp = swaddr_read(lsebp, 4);
+  }
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -135,7 +161,8 @@ static struct {
   { "info", "Print all registers", cmd_info },
   { "w", "Add watch point", cmd_w },
   { "d", "Delete watch point", cmd_d },
-  { "p", "Evaluate an expression on the current thread", cmd_p }
+  { "p", "Evaluate an expression on the current thread", cmd_p },
+  { "bt", "Print the stack frame chain", cmd_bt }
   /* TODO: Add more commands */
 
 };
