@@ -132,8 +132,8 @@ static int cmd_bt(char* args) {
     cnt++;
     printf("#%d  0x%08x ", cnt, lsret);
     getFrame(lsret, a);
-    if (a[0] == '\0') {
-      puts("Bad place!");
+    if (strcmp(a, "0x00100000")) {
+      puts("Please run program first");
       break;
     }
     printf("%s \t", a);
