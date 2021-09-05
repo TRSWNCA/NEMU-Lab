@@ -4,10 +4,11 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <sys/types.h>
+#include "monitor/elf.h"
 #include <regex.h>
 
 enum {
-  NOTYPE = 256, EQ, NEQ, AND, OR, MINUS, POINTER, DEX, HEX, REGISTER
+  NOTYPE = 256, EQ, NEQ, AND, OR, MINUS, POINTER, DEX, HEX, VARIABLE, REGISTER
 
   /* TODO: Add more token types */
 
@@ -36,6 +37,8 @@ static struct rule {
   {"\\|\\|", OR, 1},      //or
   {"\\(", '(', 7},
   {"\\)", ')', 7},
+  {"[a-zA-Z][A-Za-z0-9_]*", VARIABLE, 0},
+
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -100,6 +103,9 @@ static bool make_token(char *e) {
         if (rules[i].token_type == REGISTER) {
           strncpy(tokens[nr_token].str, ls, substr_len - 1);
           tokens[nr_token].str[substr_len-1] = '\0';
+        } else if (rules[i].token_type == VARIABLE) {
+          strncpy(tokens[nr_token].str, e + position - substr_len, substr_len);
+          tokens[nr_token].str[substr_len] = '\0';
         } else {
           strncpy(tokens[nr_token].str, substr_start, substr_len);
           tokens[nr_token].str[substr_len] = '\0';
@@ -144,7 +150,7 @@ int dominant_operator(int l, int r) {
   int i, pos = l;
   int ls = 10, flag = 0;
   for (i = l; i <= r; ++ i) {
-    if (tokens[i].type == DEX || tokens[i].type == HEX || tokens[i].type == REGISTER)
+    if (tokens[i].type >= DEX && tokens[i].type <= REGISTER)
       continue;
     if (tokens[i].type == '(') {
       flag ++; i ++;
@@ -213,6 +219,9 @@ uint32_t eval(int l, int r, bool *succuess) {
         }
         else assert(1);
       }
+    }
+    if (tokens[l].type == VARIABLE) {
+      return getVariable(tokens[l].str, succuess);
     }
     return num;
   }
