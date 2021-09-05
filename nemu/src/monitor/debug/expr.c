@@ -194,7 +194,7 @@ uint32_t eval(int l, int r, bool *succuess) {
             num = cpu.eip;
           else Assert(1, "ERROR\n");
         else num = reg_l(i);
-        printf("NUM: %d\n", num);
+        //printf("NUM: %d\n", num);
       }
       if (len == 2) {
         if (tokens[l].str[1] == 'x' || tokens[l].str[1] == 'p' || tokens[l].str[1] == 'i') {
@@ -214,7 +214,7 @@ uint32_t eval(int l, int r, bool *succuess) {
         else assert(1);
       }
     }
-    // printf("%d\n", num);
+    printf("num: %d\n", num);
     return num;
   }
   else if (check_parentheses(l, r) == true) {
