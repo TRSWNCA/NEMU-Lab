@@ -13,7 +13,7 @@ uint32_t getVariable(char* name, bool* success) {
   int i;
   for (i = 0; i < nr_symtab_entry; i++) {
     if ((symtab[i].st_info & 0xf) == STT_OBJECT) {
-      char ls[233];
+      char ls[50];
       strcpy(ls, strtab + symtab[i].st_name);
       if (strcmp(ls, name) == 0)
         return symtab[i].st_value;
@@ -27,7 +27,7 @@ void getTable() {
   int i;
   for (i = 0; i < nr_symtab_entry; i++) {
     if ((symtab[i].st_info & 0xf) == STT_OBJECT) {
-      char ls[233];
+      char ls[50];
       strcpy(ls, strtab + symtab[i].st_name);
       printf("%s\n", ls);
     }

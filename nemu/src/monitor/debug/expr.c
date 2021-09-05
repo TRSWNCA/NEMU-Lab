@@ -221,7 +221,7 @@ uint32_t eval(int l, int r, bool *succuess) {
       }
     }
     if (tokens[l].type == VARIABLE) {
-      Log("%d", (int)(*succuess));
+      //Log("%d", (int)(*succuess));
       return getVariable(tokens[l].str, succuess);
     }
     return num;
