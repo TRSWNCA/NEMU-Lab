@@ -133,9 +133,7 @@ static int cmd_bt(char* args) {
     getFrame(lsret, a);
     if (strcmp(a, "0x00100000")) {
       puts("Please run program first");
-      lsret = swaddr_read(lsebp + 4, 4);
-      lsebp = swaddr_read(lsebp, 4);
-      continue;
+      break;
     }
     printf("#%d  0x%08x ", cnt, lsret);
     printf("%s \t", a);
