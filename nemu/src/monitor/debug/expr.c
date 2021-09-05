@@ -178,7 +178,7 @@ int dominant_operator(int l, int r) {
 uint32_t eval(int l, int r, bool *succuess) {
   //Log("%d %d", l, r);
   if (l > r) {
-    succuess = false;
+    *succuess = false;
     return 0;
   } else if (l == r) {
     uint32_t num = 0;
@@ -198,7 +198,7 @@ uint32_t eval(int l, int r, bool *succuess) {
         if (i > R_EDI)
           if (!strcmp(tokens[l].str, "eip"))
             num = cpu.eip;
-          else succuess = false;
+          else *succuess = false;
         else num = reg_l(i);
         //printf("NUM: %d\n", num);
       }
@@ -221,7 +221,7 @@ uint32_t eval(int l, int r, bool *succuess) {
       }
     }
     if (tokens[l].type == VARIABLE) {
-      Log("??");
+      Log("%d", (int)(*succuess));
       return getVariable(tokens[l].str, succuess);
     }
     return num;
