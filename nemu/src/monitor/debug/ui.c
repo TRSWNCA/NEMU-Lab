@@ -132,6 +132,10 @@ static int cmd_bt(char* args) {
     cnt++;
     printf("#%d  0x%08x ", cnt, lsret);
     getFrame(lsret, a);
+    if (a[0] == '\0') {
+      puts("Bad place!");
+      break;
+    }
     printf("%s \t", a);
     printf("( ");
     if (strcmp(a, "main") == 0)
