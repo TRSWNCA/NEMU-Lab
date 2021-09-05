@@ -5,12 +5,19 @@ FLOAT_VFPRINTF_O := $(dir $(FLOAT))FLOAT_vfprintf.o
 
 FLOAT_A_OBJ := $(FLOAT_O) $(FLOAT_VFPRINTF_O)
 
+FLOAT_CFLAGS_EXTRA := -O2 -m32 -fno-builtin -march=i386 -mtune=i386
+FLOATV_CFLAGS_EXTRA := -O2 -m32 -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin -march=i386 -mtune=i386
+
 $(FLOAT): $(FLOAT_A_OBJ)
 	ar r $@ $^
 
 # TODO: complete the following rules
 
 $(FLOAT_O):
+	mkdir -p obj/lib-common/FLOAT
+	$(CC) $(FLOAT_CFLAGS_EXTRA) -c lib-common/FLOAT/FLOAT.c -o $(FLOAT_O) -Ilib-common
 
 $(FLOAT_VFPRINTF_O):
+	mkdir -p obj/lib-common/FLOAT
+	$(CC) $(FLOATV_CFLAGS_EXTRA) -c lib-common/FLOAT/FLOAT_vfprintf.c -o $(FLOAT_VFPRINTF_O) -Ilib-common
 
