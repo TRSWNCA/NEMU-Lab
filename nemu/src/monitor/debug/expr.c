@@ -239,6 +239,7 @@ uint32_t eval(int l, int r, bool *succuess) {
         case '!':
           return !ls;
         default:
+          puts("??");
           *succuess = false;
           return -1;
           //Assert(1, "ERROER");
