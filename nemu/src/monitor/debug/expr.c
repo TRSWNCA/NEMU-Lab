@@ -194,7 +194,7 @@ uint32_t eval(int l, int r, bool *succuess) {
             num = cpu.eip;
           else Assert(1, "ERROR\n");
         else num = reg_l(i);
-        // printf("233 %d %d\n", num, i);
+        //printf("NUM: %d\n", num);
       }
       if (len == 2) {
         if (tokens[l].str[1] == 'x' || tokens[l].str[1] == 'p' || tokens[l].str[1] == 'i') {
@@ -214,7 +214,6 @@ uint32_t eval(int l, int r, bool *succuess) {
         else assert(1);
       }
     }
-    // printf("%d\n", num);
     return num;
   }
   else if (check_parentheses(l, r) == true) {
@@ -229,7 +228,8 @@ uint32_t eval(int l, int r, bool *succuess) {
     }
     if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
       uint32_t ls = eval(l + 1, r, succuess);
-      switch (tokens[l].type) {
+      //Log("ls: %d", ls);
+      switch (tokens[op].type) {
         case POINTER:
           return swaddr_read(ls, 4);
         case MINUS:
@@ -243,7 +243,7 @@ uint32_t eval(int l, int r, bool *succuess) {
       }
     }
     uint32_t val1 = eval(l, op - 1, succuess), val2 = eval(op + 1, r, succuess);
-    // printf("val1 %d, val2 %d, l %d, r %d\n", val1, val2, l, r);
+    //Log("val1 %d, val2 %d, l %d, r %d", val1, val2, l, r);
     switch (tokens[op].type) {
       case '+':
         return val1 + val2;
@@ -265,7 +265,7 @@ uint32_t eval(int l, int r, bool *succuess) {
         break;
     }
   }
-  *succuess = false;
+  //*succuess = false;
   return -1;
 }
 
@@ -279,7 +279,7 @@ uint32_t expr(char *e, bool *success) {
   //Log("make_token success");
   int i;
   for (i = 0; i < nr_token; i++) {
-    if (i == 0 || (tokens[i - 1].type < DEX && tokens[i - 1].type > REGISTER && tokens[i - 1].type != ')')) {
+    if (i == 0 || ((tokens[i - 1].type < DEX || tokens[i - 1].type > REGISTER) && tokens[i - 1].type != ')')) {
       if (tokens[i].type == '*') {
         tokens[i].type = POINTER;
         tokens[i].prior = 6;
