@@ -170,7 +170,7 @@ int dominant_operator(int l, int r) {
 }
 
 uint32_t eval(int l, int r, bool *succuess) {
-  Log("%d %d", l, r);
+  //Log("%d %d", l, r);
   if (l > r) {
     Assert(l > r, "ERROR\n");
     return 0;
@@ -222,31 +222,29 @@ uint32_t eval(int l, int r, bool *succuess) {
   }
   else {
     int op = dominant_operator(l, r);
-    Log("op: %d", op);
+    //Log("op: %d", op);
     if (op == -1) {
       *succuess = false;
       return -1;
     }
     if (l == op || tokens[op].type == POINTER || tokens[op].type == MINUS || tokens[op].type == '!') {
       uint32_t ls = eval(l + 1, r, succuess);
-      Log("ls: %d", ls);
+      //Log("ls: %d", ls);
       switch (tokens[op].type) {
         case POINTER:
-          puts("OK");
           return swaddr_read(ls, 4);
         case MINUS:
           return -ls;
         case '!':
           return !ls;
         default:
-          puts("??");
           *succuess = false;
           return -1;
           //Assert(1, "ERROER");
       }
     }
     uint32_t val1 = eval(l, op - 1, succuess), val2 = eval(op + 1, r, succuess);
-    Log("val1 %d, val2 %d, l %d, r %d", val1, val2, l, r);
+    //Log("val1 %d, val2 %d, l %d, r %d", val1, val2, l, r);
     switch (tokens[op].type) {
       case '+':
         return val1 + val2;
@@ -277,8 +275,6 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  Log("%d", REGISTER);
-  Log("%d", nr_token);
 
   /* TODO: Insert codes to evaluate the expression. */
   //Log("make_token success");
