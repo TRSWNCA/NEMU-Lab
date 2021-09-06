@@ -232,6 +232,7 @@ uint32_t eval(int l, int r, bool *succuess) {
       Log("ls: %d", ls);
       switch (tokens[l].type) {
         case POINTER:
+          puts("OK");
           return swaddr_read(ls, 4);
         case MINUS:
           return -ls;
