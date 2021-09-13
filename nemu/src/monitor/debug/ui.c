@@ -129,12 +129,14 @@ static int cmd_bt(char* args) {
   swaddr_t lsret = cpu.eip;
   int cnt = 0, i;
   while (lsebp) {
+    cnt++;
     getFrame(lsret, a);
     if (strcmp(a, "0x00100000")) {
       puts("Please run program first");
+      lsret = swaddr_read(lsebp + 4, 4);
+      lsebp = swaddr_read(lsebp, 4);
       continue;
     }
-    cnt++;
     printf("#%d  0x%08x ", cnt, lsret);
     printf("%s \t", a);
     printf("( ");
