@@ -20,91 +20,91 @@ void ddr3_read_me(hwaddr_t addr, void* data);
 
 // return whole index of way in cacheL1
 int read_cache_L1(hwaddr_t addr) {
-  uint32_t set_index = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L1_SET_NUM - 1));
+  uint32_t setIndex = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L1_SET_NUM - 1));
   uint32_t tag = (addr >> (CACHE_BLOCK_BIT + CACHE_L1_SET_BIT));
   // uint32_t block_start = ((addr >> CACHE_BLOCK_BIT) << CACHE_BLOCK_BIT);
 
-  int way_index;
-  int whole_begin_way_index = set_index * CACHE_L1_WAY_NUM;
-  int whole_end_way_index = (set_index + 1) * CACHE_L1_WAY_NUM;
-  for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L1[way_index].validVal && cache_L1[way_index].tag == tag) {
+  int wayIndex;
+  int whole_begin_wayIndex = setIndex * CACHE_L1_WAY_NUM;
+  int whole_end_wayIndex = (setIndex + 1) * CACHE_L1_WAY_NUM;
+  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++) {
+    if (cache_L1[wayIndex].validVal && cache_L1[wayIndex].tag == tag) {
       // Hit!
-      return way_index;
+      return wayIndex;
     }
   }
   // Hit loss!
   // go to cacheL2
   srand(time(0));
-  int way_index_L2 = read_cache_L2(addr);
-  way_index = whole_begin_way_index + rand() % CACHE_L1_WAY_NUM;
-  memcpy(cache_L1[way_index].data, cache_L2[way_index_L2].data, CACHE_BLOCK_SIZE);
+  int wayIndex_L2 = read_cache_L2(addr);
+  wayIndex = whole_begin_wayIndex + rand() % CACHE_L1_WAY_NUM;
+  memcpy(cache_L1[wayIndex].data, cache_L2[wayIndex_L2].data, CACHE_BLOCK_SIZE);
 
-  cache_L1[way_index].validVal = true;
-  cache_L1[way_index].tag = tag;
-  return way_index;
+  cache_L1[wayIndex].validVal = true;
+  cache_L1[wayIndex].tag = tag;
+  return wayIndex;
 }
 
 void ddr3_write_me(hwaddr_t addr, void* data, uint8_t* mask);
 
 // return whole index of way in cacheL2
 int read_cache_L2(hwaddr_t addr) {
-  uint32_t set_index = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L2_SET_NUM - 1));
+  uint32_t setIndex = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L2_SET_NUM - 1));
   uint32_t tag = (addr >> (CACHE_BLOCK_BIT + CACHE_L2_SET_BIT));
   uint32_t block_start = ((addr >> CACHE_BLOCK_BIT) << CACHE_BLOCK_BIT);
 
-  int way_index;
-  int whole_begin_way_index = set_index * CACHE_L2_WAY_NUM;
-  int whole_end_way_index = (set_index + 1) * CACHE_L2_WAY_NUM;
-  for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L2[way_index].validVal && cache_L2[way_index].tag == tag) {
+  int wayIndex;
+  int whole_begin_wayIndex = setIndex * CACHE_L2_WAY_NUM;
+  int whole_end_wayIndex = (setIndex + 1) * CACHE_L2_WAY_NUM;
+  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++) {
+    if (cache_L2[wayIndex].validVal && cache_L2[wayIndex].tag == tag) {
       // Hit!
-      return way_index;
+      return wayIndex;
     }
   }
   // Hit loss!
   srand(time(0));
-  way_index = whole_begin_way_index + rand() % CACHE_L2_WAY_NUM;
+  wayIndex = whole_begin_wayIndex + rand() % CACHE_L2_WAY_NUM;
   int i;
-  if (cache_L2[way_index].validVal && cache_L2[way_index].dirtyVal) {
+  if (cache_L2[wayIndex].validVal && cache_L2[wayIndex].dirtyVal) {
     // write down
     uint8_t tmp[BURST_LEN << 1];
     memset(tmp, 1, sizeof(tmp));
-    uint32_t block_start_x = (cache_L2[way_index].tag << (CACHE_L2_SET_BIT + CACHE_BLOCK_BIT)) | (set_index << CACHE_BLOCK_BIT);
+    uint32_t block_start_x = (cache_L2[wayIndex].tag << (CACHE_L2_SET_BIT + CACHE_BLOCK_BIT)) | (setIndex << CACHE_BLOCK_BIT);
     for (i = 0; i < CACHE_BLOCK_SIZE / BURST_LEN; i++) {
-      ddr3_write_me(block_start_x + BURST_LEN * i, cache_L2[way_index].data + BURST_LEN * i, tmp);
+      ddr3_write_me(block_start_x + BURST_LEN * i, cache_L2[wayIndex].data + BURST_LEN * i, tmp);
     }
   }
   for (i = 0; i < CACHE_BLOCK_SIZE / BURST_LEN; i++) {
-    ddr3_read_me(block_start + BURST_LEN * i, cache_L2[way_index].data + BURST_LEN * i);
+    ddr3_read_me(block_start + BURST_LEN * i, cache_L2[wayIndex].data + BURST_LEN * i);
   }
-  cache_L2[way_index].validVal = true;
-  cache_L2[way_index].dirtyVal = false;
-  cache_L2[way_index].tag = tag;
-  return way_index;
+  cache_L2[wayIndex].validVal = true;
+  cache_L2[wayIndex].dirtyVal = false;
+  cache_L2[wayIndex].tag = tag;
+  return wayIndex;
 }
 
 void dram_write(hwaddr_t addr, size_t len, uint32_t data);
 
 void write_cache_L1(hwaddr_t addr, size_t len, uint32_t data) {
-  uint32_t set_index = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L1_SET_NUM - 1));
+  uint32_t setIndex = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L1_SET_NUM - 1));
   uint32_t tag = (addr >> (CACHE_BLOCK_BIT + CACHE_L1_SET_BIT));
   uint32_t block_bias = addr & (CACHE_BLOCK_SIZE - 1);
-  int way_index;
-  int whole_begin_way_index = set_index * CACHE_L1_WAY_NUM;
-  int whole_end_way_index = (set_index + 1) * CACHE_L1_WAY_NUM;
-  for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L1[way_index].validVal && cache_L1[way_index].tag == tag) {
+  int wayIndex;
+  int whole_begin_wayIndex = setIndex * CACHE_L1_WAY_NUM;
+  int whole_end_wayIndex = (setIndex + 1) * CACHE_L1_WAY_NUM;
+  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++) {
+    if (cache_L1[wayIndex].validVal && cache_L1[wayIndex].tag == tag) {
       // Hit!
       // write through
       if (block_bias + len > CACHE_BLOCK_SIZE) {
         dram_write(addr, CACHE_BLOCK_SIZE - block_bias, data);
-        memcpy(cache_L1[way_index].data + block_bias, &data, CACHE_BLOCK_SIZE - block_bias);
+        memcpy(cache_L1[wayIndex].data + block_bias, &data, CACHE_BLOCK_SIZE - block_bias);
         write_cache_L2(addr, CACHE_BLOCK_SIZE - block_bias, data);
         write_cache_L1(addr + CACHE_BLOCK_SIZE - block_bias, len - (CACHE_BLOCK_SIZE - block_bias), data >> (CACHE_BLOCK_SIZE - block_bias));
       } else {
         dram_write(addr, len, data);
-        memcpy(cache_L1[way_index].data + block_bias, &data, len);
+        memcpy(cache_L1[wayIndex].data + block_bias, &data, len);
         write_cache_L2(addr, len, data);
       }
       return;
@@ -117,30 +117,30 @@ void write_cache_L1(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 void write_cache_L2(hwaddr_t addr, size_t len, uint32_t data) {
-  uint32_t set_index = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L2_SET_NUM - 1));
+  uint32_t setIndex = ((addr >> CACHE_BLOCK_BIT) & (CACHE_L2_SET_NUM - 1));
   uint32_t tag = (addr >> (CACHE_BLOCK_BIT + CACHE_L2_SET_BIT));
   uint32_t block_bias = addr & (CACHE_BLOCK_SIZE - 1);
-  int way_index;
-  int whole_begin_way_index = set_index * CACHE_L2_WAY_NUM;
-  int whole_end_way_index = (set_index + 1) * CACHE_L2_WAY_NUM;
-  for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L2[way_index].validVal && cache_L2[way_index].tag == tag) {
+  int wayIndex;
+  int whole_begin_wayIndex = setIndex * CACHE_L2_WAY_NUM;
+  int whole_end_wayIndex = (setIndex + 1) * CACHE_L2_WAY_NUM;
+  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++) {
+    if (cache_L2[wayIndex].validVal && cache_L2[wayIndex].tag == tag) {
       // Hit!
       // write back
-      cache_L2[way_index].dirtyVal = true;
+      cache_L2[wayIndex].dirtyVal = true;
       if (block_bias + len > CACHE_BLOCK_SIZE) {
-        memcpy(cache_L2[way_index].data + block_bias, &data, CACHE_BLOCK_SIZE - block_bias);
+        memcpy(cache_L2[wayIndex].data + block_bias, &data, CACHE_BLOCK_SIZE - block_bias);
         write_cache_L2(addr + CACHE_BLOCK_SIZE - block_bias, len - (CACHE_BLOCK_SIZE - block_bias), data >> (CACHE_BLOCK_SIZE - block_bias));
       } else {
-        memcpy(cache_L2[way_index].data + block_bias, &data, len);
+        memcpy(cache_L2[wayIndex].data + block_bias, &data, len);
       }
       return;
     }
   }
   //  Hit loss!
   // write allocate
-  way_index = read_cache_L2(addr);
-  cache_L2[way_index].dirtyVal = true;
-  memcpy(cache_L2[way_index].data + block_bias, &data, len);
+  wayIndex = read_cache_L2(addr);
+  cache_L2[wayIndex].dirtyVal = true;
+  memcpy(cache_L2[wayIndex].data + block_bias, &data, len);
   return;
 }
