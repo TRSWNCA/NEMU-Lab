@@ -27,12 +27,9 @@ int read_cache_L1(hwaddr_t addr) {
   int wayIndex;
   int whole_begin_wayIndex = setIndex * CACHE_L1_WAY_NUM;
   int whole_end_wayIndex = (setIndex + 1) * CACHE_L1_WAY_NUM;
-  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++) {
-    if (cache_L1[wayIndex].validVal && cache_L1[wayIndex].tag == tag) {
-      // Hit!
+  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++)
+    if (cache_L1[wayIndex].validVal && cache_L1[wayIndex].tag == tag) // Hit!
       return wayIndex;
-    }
-  }
   // Hit loss!
   // go to cacheL2
   srand(time(0));
@@ -56,12 +53,8 @@ int read_cache_L2(hwaddr_t addr) {
   int wayIndex;
   int whole_begin_wayIndex = setIndex * CACHE_L2_WAY_NUM;
   int whole_end_wayIndex = (setIndex + 1) * CACHE_L2_WAY_NUM;
-  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++) {
-    if (cache_L2[wayIndex].validVal && cache_L2[wayIndex].tag == tag) {
-      // Hit!
-      return wayIndex;
-    }
-  }
+  for (wayIndex = whole_begin_wayIndex; wayIndex < whole_end_wayIndex; wayIndex++)
+    if (cache_L2[wayIndex].validVal && cache_L2[wayIndex].tag == tag) return wayIndex; // Hit!
   // Hit loss!
   srand(time(0));
   wayIndex = whole_begin_wayIndex + rand() % CACHE_L2_WAY_NUM;
