@@ -155,6 +155,11 @@ static int cmd_bt(char* args) {
   return 0;
 }
 
+static int cmd_tb() {
+  getTable();
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -169,7 +174,8 @@ static struct {
   { "w", "Add watch point", cmd_w },
   { "d", "Delete watch point", cmd_d },
   { "p", "Evaluate an expression on the current thread", cmd_p },
-  { "bt", "Print the stack frame chain", cmd_bt }
+  { "bt", "Print the stack frame chain", cmd_bt },
+  { "tb", "Show all variables", cmd_tb}
   /* TODO: Add more commands */
 
 };

@@ -15,13 +15,23 @@ uint32_t getVariable(char* name, bool* success) {
     if ((symtab[i].st_info & 0xf) == STT_OBJECT) {
       char ls[233];
       strcpy(ls, strtab + symtab[i].st_name);
-      Log("%s", ls);
       if (strcmp(ls, name) == 0)
         return symtab[i].st_value;
     }
   }
   *success = false;
   return 0;
+}
+
+void getTable() {
+  int i;
+  for (i = 0; i < nr_symtab_entry; i++) {
+    if ((symtab[i].st_info & 0xf) == STT_OBJECT) {
+      char ls[233];
+      strcpy(ls, strtab + symtab[i].st_name);
+      printf("%s\n", ls);
+    }
+  }
 }
 
 void getFrame(swaddr_t addr, char* s) {
