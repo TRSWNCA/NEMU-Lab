@@ -128,16 +128,18 @@ static int cmd_bt(char* args) {
   swaddr_t lsebp = reg_l(R_EBP);
   swaddr_t lsret = cpu.eip;
   int cnt = 0, i;
-  static bool isRun = false;
+  //static bool isRun = false;
   while (lsebp) {
     cnt++;
     getFrame(lsret, a);
+    /*
     if (!isRun && strcmp(a, "main") == 0)
       isRun = true;
     if (!isRun) {
       puts("Please Run Program First");
       break;
     }
+    */
     printf("#%d  0x%08x ", cnt, lsret);
     printf("%s \t", a);
     printf("( ");
