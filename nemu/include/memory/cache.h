@@ -4,7 +4,7 @@
 #include "common.h"
 
 #define CACHE_BLOCK_BIT 6
-#define CACHE_BLOCK_SIZE 64
+#define CACHE_BLOCK_SIZE (1 << CACHE_BLOCK_BIT)
 #define CACHE_L1_CAP 64 * 1024
 #define CACHE_L1_WAY_BIT 3
 #define CACHE_L1_WAY_NUM 8
