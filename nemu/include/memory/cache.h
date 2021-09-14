@@ -20,7 +20,7 @@
 typedef struct{
     uint8_t data[CACHE_BLOCK_SIZE];
     uint32_t tag;
-    bool valid_value;
+    bool validVal;
 } L1;
 
 L1 cache_L1[CACHE_L1_SET_NUM * CACHE_L1_WAY_NUM];
@@ -35,8 +35,8 @@ void write_cache_L1(hwaddr_t, size_t, uint32_t);
 typedef struct{
     uint8_t data[CACHE_BLOCK_SIZE];
     uint32_t tag;
-    bool valid_value;
-    bool dirty_value;
+    bool validVal;
+    bool dirtyVal;
 } L2;
 
 L2 cache_L2[CACHE_L2_SET_NUM * CACHE_L2_WAY_NUM];
