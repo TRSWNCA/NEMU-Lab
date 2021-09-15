@@ -119,7 +119,8 @@ static int cmd_p(char * args) {
   bool success = false;
   uint32_t ans = expr(args, &success);
   if (!success) return puts("Error expr!"), 1;
-  printf("%s = %d\n", args, ans);
+  //printf("%s = %d\n", args, ans);
+  printf("0x%08x(%d)\n", ans, ans);
   return 0;
 }
 
