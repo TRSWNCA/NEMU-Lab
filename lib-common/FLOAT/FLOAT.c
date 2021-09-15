@@ -53,6 +53,7 @@ FLOAT f2F(float a) {
    * performing arithmetic operations on it directly?
    */
 
+  /*
   int b = *(int*)&a;
   int sign = b >> 31;
   int exp = (b >> 23) & 0xff;
@@ -65,6 +66,7 @@ FLOAT f2F(float a) {
   if (exp > -16)
     x <<= 16 + exp;
   return sign == 0 ? x : -x;
+  */
 }
 
 FLOAT Fabs(FLOAT a) {
