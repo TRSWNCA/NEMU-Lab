@@ -5,8 +5,10 @@ FLOAT_VFPRINTF_O := $(dir $(FLOAT))FLOAT_vfprintf.o
 
 FLOAT_A_OBJ := $(FLOAT_O) $(FLOAT_VFPRINTF_O)
 
-FLOAT_CFLAGS_EXTRA := -O2 -m32 -fno-builtin -march=i386 -mtune=i386
-FLOATV_CFLAGS_EXTRA := -O2 -m32 -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin -march=i386 -mtune=i386
+# FLOAT_CFLAGS_EXTRA := -O2 -m32 -fno-builtin -march=i386 -mtune=i386
+# FLOATV_CFLAGS_EXTRA := -O2 -m32 -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin -march=i386 -mtune=i386
+FLOAT_CFLAGS_EXTRA := -O2 -m32 -fno-builtin
+FLOATV_CFLAGS_EXTRA := -O2 -m32 -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin
 
 $(FLOAT): $(FLOAT_A_OBJ)
 	ar r $@ $^
