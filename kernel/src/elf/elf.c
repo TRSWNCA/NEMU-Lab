@@ -35,13 +35,13 @@ uint32_t loader() {
   const uint32_t elf_magic = 0x464c457f;
   uint32_t* p_magic = (void*)buf;
   nemu_assert(*p_magic == elf_magic);
-  set_bp();
 
   /* Load each program segment */
   int i;
   ph = (void*)(buf + elf->e_phoff);
   // panic("please implement me");
   for (i = 0; i < elf->e_phnum; i++, ph++) {
+    set_bp();
     /* Scan the program header table, load each segment into memory */
     if (ph->p_type == PT_LOAD) {
 
