@@ -10,7 +10,7 @@ static void do_execute() {
 	s1 = op_dest->val >> len;
 	s2 = op_src->val >> len;
 	cpu.eflags.CF = op_dest->val < op_src->val;
-  cpu.eflags.OF = MSB(~(op_dest -> val ^ op_src -> val) & (~(op_src -> val ^ result)));
+  cpu.eflags.OF = MSB((op_dest -> val ^ op_src -> val) & (~(op_src -> val ^ result)));
 	//cpu.eflags.OF = (s1 != s2 && s2 == cpu.eflags.SF);
 	print_asm_template2();
 }
