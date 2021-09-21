@@ -3,6 +3,7 @@
 #define instr pop
 
 static void do_execute() {
+  current_sreg = R_SS;
   OPERAND_W(op_src, MEM_R(REG(R_ESP)));
   MEM_W(REG(R_ESP), 0);
   REG(R_ESP) += DATA_BYTE;
