@@ -1,4 +1,5 @@
 #include "nemu.h"
+#include "memory/cache.h"
 
 #define ENTRY_START 0x100000
 
@@ -37,6 +38,9 @@ void init_monitor(int argc, char *argv[]) {
 
 	/* Initialize the watchpoint pool. */
 	init_wp_pool();
+
+  /* Initialize the cahce */
+  init_cache();
 
 	/* Display welcome message. */
 	welcome();
