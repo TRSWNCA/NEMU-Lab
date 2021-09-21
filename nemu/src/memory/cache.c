@@ -7,11 +7,11 @@
 void init_cache() {
   int i;
   for (i = 0; i < CACHE_L1_SET_NUM * CACHE_L1_WAY_NUM; i++) {
-    cache_L1[i].valid_value = false;
+    cache_L1[i].validVal = false;
   }
   for (i = 0; i < CACHE_L2_SET_NUM * CACHE_L2_WAY_NUM; i++) {
-    cache_L2[i].dirty_value = false;
-    cache_L2[i].valid_value = false;
+    cache_L2[i].dirtyVal = false;
+    cache_L2[i].validVal = false;
   }
   return;
 }
@@ -28,7 +28,7 @@ int read_cache_L1(hwaddr_t addr) {
   int whole_begin_way_index = set_index * CACHE_L1_WAY_NUM;
   int whole_end_way_index = (set_index + 1) * CACHE_L1_WAY_NUM;
   for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L1[way_index].valid_value && cache_L1[way_index].tag == tag) {
+    if (cache_L1[way_index].validVal && cache_L1[way_index].tag == tag) {
       // Hit!
       return way_index;
     }
@@ -40,7 +40,7 @@ int read_cache_L1(hwaddr_t addr) {
   way_index = whole_begin_way_index + rand() % CACHE_L1_WAY_NUM;
   memcpy(cache_L1[way_index].data, cache_L2[way_index_L2].data, CACHE_BLOCK_SIZE);
 
-  cache_L1[way_index].valid_value = true;
+  cache_L1[way_index].validVal = true;
   cache_L1[way_index].tag = tag;
   return way_index;
 }
@@ -57,7 +57,7 @@ int read_cache_L2(hwaddr_t addr) {
   int whole_begin_way_index = set_index * CACHE_L2_WAY_NUM;
   int whole_end_way_index = (set_index + 1) * CACHE_L2_WAY_NUM;
   for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L2[way_index].valid_value && cache_L2[way_index].tag == tag) {
+    if (cache_L2[way_index].validVal && cache_L2[way_index].tag == tag) {
       // Hit!
       return way_index;
     }
@@ -66,7 +66,7 @@ int read_cache_L2(hwaddr_t addr) {
   srand(time(0));
   way_index = whole_begin_way_index + rand() % CACHE_L2_WAY_NUM;
   int i;
-  if (cache_L2[way_index].valid_value && cache_L2[way_index].dirty_value) {
+  if (cache_L2[way_index].validVal && cache_L2[way_index].dirtyVal) {
     // write down
     uint8_t tmp[BURST_LEN << 1];
     memset(tmp, 1, sizeof(tmp));
@@ -78,8 +78,8 @@ int read_cache_L2(hwaddr_t addr) {
   for (i = 0; i < CACHE_BLOCK_SIZE / BURST_LEN; i++) {
     ddr3_read_me(block_start + BURST_LEN * i, cache_L2[way_index].data + BURST_LEN * i);
   }
-  cache_L2[way_index].valid_value = true;
-  cache_L2[way_index].dirty_value = false;
+  cache_L2[way_index].validVal = true;
+  cache_L2[way_index].dirtyVal = false;
   cache_L2[way_index].tag = tag;
   return way_index;
 }
@@ -94,7 +94,7 @@ void write_cache_L1(hwaddr_t addr, size_t len, uint32_t data) {
   int whole_begin_way_index = set_index * CACHE_L1_WAY_NUM;
   int whole_end_way_index = (set_index + 1) * CACHE_L1_WAY_NUM;
   for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L1[way_index].valid_value && cache_L1[way_index].tag == tag) {
+    if (cache_L1[way_index].validVal && cache_L1[way_index].tag == tag) {
       // Hit!
       // write through
       if (block_bias + len > CACHE_BLOCK_SIZE) {
@@ -124,10 +124,10 @@ void write_cache_L2(hwaddr_t addr, size_t len, uint32_t data) {
   int whole_begin_way_index = set_index * CACHE_L2_WAY_NUM;
   int whole_end_way_index = (set_index + 1) * CACHE_L2_WAY_NUM;
   for (way_index = whole_begin_way_index; way_index < whole_end_way_index; way_index++) {
-    if (cache_L2[way_index].valid_value && cache_L2[way_index].tag == tag) {
+    if (cache_L2[way_index].validVal && cache_L2[way_index].tag == tag) {
       // Hit!
       // write back
-      cache_L2[way_index].dirty_value = true;
+      cache_L2[way_index].dirtyVal = true;
       if (block_bias + len > CACHE_BLOCK_SIZE) {
         memcpy(cache_L2[way_index].data + block_bias, &data, CACHE_BLOCK_SIZE - block_bias);
         write_cache_L2(addr + CACHE_BLOCK_SIZE - block_bias, len - (CACHE_BLOCK_SIZE - block_bias), data >> (CACHE_BLOCK_SIZE - block_bias));
@@ -140,7 +140,7 @@ void write_cache_L2(hwaddr_t addr, size_t len, uint32_t data) {
   //  Hit loss!
   // write allocate
   way_index = read_cache_L2(addr);
-  cache_L2[way_index].dirty_value = true;
+  cache_L2[way_index].dirtyVal = true;
   memcpy(cache_L2[way_index].data + block_bias, &data, len);
   return;
 }
