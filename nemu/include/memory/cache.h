@@ -9,13 +9,13 @@
 #define CACHE_L1_WAY_BIT 3
 #define CACHE_L1_WAY_NUM (1 << CACHE_L1_WAY_BIT)
 #define CACHE_L1_SET_BIT 7
-#define CACHE_L1_SET_NUM 128
+#define CACHE_L1_SET_NUM (1 << CACHE_L1_SET_BIT)
 
 #define CACHE_L2_CAP 4 * 1024 * 1024
 #define CACHE_L2_WAY_BIT 4
-#define CACHE_L2_WAY_NUM 16
+#define CACHE_L2_WAY_NUM (1 << CACHE_L2_WAY_BIT)
 #define CACHE_L2_SET_BIT 12
-#define CACHE_L2_SET_NUM 4096
+#define CACHE_L2_SET_NUM (1 << CACHE_L2_SET_BIT)
 
 typedef struct{
     uint8_t data[CACHE_BLOCK_SIZE];
