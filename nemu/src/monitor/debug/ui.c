@@ -45,6 +45,7 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_x(char *args) {
+  current_sreg = R_DS;
   char *arg = strtok(args, " ");
   if (arg == NULL) return puts("Wrong args!!"), 1;
   int n = atoi(arg);
@@ -126,6 +127,7 @@ static int cmd_p(char * args) {
 
 static int cmd_bt(char* args) {
   char a[50];
+  current_sreg = R_SS;
   swaddr_t lsebp = reg_l(R_EBP);
   swaddr_t lsret = cpu.eip;
   int cnt = 0, i;
