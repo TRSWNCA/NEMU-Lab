@@ -49,6 +49,7 @@
 #include "logic/setne.h"
 #include "logic/sete.h"
 #include "logic/std.h"
+#include "logic/cld.h"
 
 #include "string/rep.h"
 #include "string/scas.h"
