@@ -81,5 +81,4 @@ make_helper(mov_sreg2rm) {
 }
 #endif
 
-
 #include "cpu/exec/template-end.h"
