@@ -18,10 +18,10 @@ enum { R_ES, R_CS, R_SS, R_DS, R_FS, R_GS};
  */
 
 typedef struct {
-	uint16_t selector;
-	// invisible
-	uint16_t attribute;
-	uint32_t limit, base;
+  uint16_t selector;
+  // invisible
+  uint16_t attribute;
+  uint32_t limit, base;
 } Segment_Reg;
 
 typedef struct {
@@ -65,51 +65,51 @@ typedef struct {
     uint32_t val;
   } eflags;
 
-	struct GDTR {
-		uint32_t base;
-		uint16_t limit;
-	} gdtr;
+  struct GDTR {
+    uint32_t base;
+    uint16_t limit;
+  } gdtr;
 
-	CR0 cr0;
+  CR0 cr0;
 
-	union {
-		struct {
-			Segment_Reg sreg[6];
-		};
-		struct {
-			Segment_Reg es, cs, ss, ds, fs, gs;
-		};
-	};
+  union {
+    struct {
+      Segment_Reg sreg[6];
+    };
+    struct {
+      Segment_Reg es, cs, ss, ds, fs, gs;
+    };
+  };
 
-	CR3 cr3;
+  CR3 cr3;
 } CPU_state;
 
 typedef struct{
-	union{
-		struct{
-			uint16_t limit1;
-			uint16_t base1;
-		};
-		uint32_t part1;
-	};
-	union{
-		struct{
-			uint32_t base2:		8;
-			uint32_t a:			1;
-			uint32_t type:		3;
-			uint32_t s:			1;
-			uint32_t dpl:		2;
-			uint32_t p:			1;
-			uint32_t limit2:	4;
-			uint32_t avl:		1;
-			uint32_t :			1;
-			uint32_t x:			1;
-			uint32_t g:			1;
-			uint32_t base3:		8;
-		};
-		uint32_t part2;
-	};
-}Sreg_Descriptor;
+  union{
+    struct{
+      uint16_t limit1;
+      uint16_t base1;
+    };
+    uint32_t part1;
+  };
+  union{
+    struct{
+      uint32_t base2:		8;
+      uint32_t a:			1;
+      uint32_t type:		3;
+      uint32_t s:			1;
+      uint32_t dpl:		2;
+      uint32_t p:			1;
+      uint32_t limit2:	4;
+      uint32_t avl:		1;
+      uint32_t :			1;
+      uint32_t x:			1;
+      uint32_t g:			1;
+      uint32_t base3:		8;
+    };
+    uint32_t part2;
+  };
+} Sreg_Descriptor;
 
 Sreg_Descriptor *sreg_desc;
 
@@ -118,6 +118,24 @@ void sreg_load(uint8_t);
 extern CPU_state cpu;
 
 uint8_t current_sreg;
+
+typedef struct{
+  union{
+    struct{
+      uint32_t p     :1;
+      uint32_t rw    :1;
+      uint32_t us    :1;
+      uint32_t       :2;
+      uint32_t a     :1;
+      uint32_t d     :1;
+      uint32_t       :2;
+      uint32_t avail :3;
+      uint32_t addr  :20;
+    };
+    uint32_t val;
+  };
+} Page_Descriptor;
+
 
 static inline int check_reg_index(int index) {
   assert(index >= 0 && index < 8);
