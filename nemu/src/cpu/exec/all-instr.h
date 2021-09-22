@@ -48,6 +48,7 @@
 #include "logic/test.h"
 #include "logic/setne.h"
 #include "logic/sete.h"
+#include "logic/std.h"
 
 #include "string/rep.h"
 #include "string/scas.h"
