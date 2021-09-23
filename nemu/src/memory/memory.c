@@ -23,7 +23,6 @@ hwaddr_t page_translate(lnaddr_t addr) {
     uint32_t dir_position = (dir_start << 12) + (dir << 2);
     Page_Descriptor first_content;
     first_content.val = hwaddr_read(dir_position, 4);
-    Log("%d", first_content.p);
     Assert(first_content.p == 1, "Page unavailable");
     uint32_t page_start = first_content.addr;
     uint32_t page_pos = (page_start << 12) + (page << 2);
