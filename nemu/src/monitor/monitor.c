@@ -1,5 +1,6 @@
 #include "nemu.h"
 #include "memory/cache.h"
+#include "memory/tlb.h"
 
 #define ENTRY_START 0x100000
 
@@ -92,6 +93,9 @@ void restart() {
 
   /* Initialize the cahce */
   init_cache();
+
+  /* Initialize the TLB*/
+  init_tlb();
 
   /* Initialize the Segment Register*/
   cpu.cr0.protect_enable = 0;
