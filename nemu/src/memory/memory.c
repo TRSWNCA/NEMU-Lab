@@ -70,7 +70,14 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
   assert(len == 1 || len == 2 || len == 4);
   uint32_t cur_bias = addr & 0xfff;
   if (cur_bias + len - 1 > 0xfff) {
-    assert(0);
+    //assert(0); depend on the mechine
+    size_t len1 = 0xfff - cur_bias + 1;
+    size_t len2 = len - len1;
+    uint32_t addr_len1 = lnaddr_read(addr, len1);
+    uint32_t addr_len2 = lnaddr_read(addr + len1, len2);
+    uint32_t value = (addr_len2 << (len1 << 3)) | addr_len1;
+    return value;
+
   } else {
     hwaddr_t hwaddr = page_translate(addr);
     return hwaddr_read(hwaddr, len);
@@ -81,7 +88,11 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
   assert(len == 1 || len == 2 || len == 4);
   uint32_t cur_bias = addr & 0xfff;
   if (cur_bias + len - 1 > 0xfff) {
-    assert(0);
+    //assert(0); depend on the mechine
+    size_t len1 = 0xfff - cur_bias + 1;
+    size_t len2 = len - len1;
+    lnaddr_write(addr, len1, data & ((1 << (len1 << 3)) - 1));
+    lnaddr_write(addr + len1, len2, data >> (len1 << 3));
   } else {
     hwaddr_t hwaddr = page_translate(addr);
     hwaddr_write(hwaddr, len, data);
