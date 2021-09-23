@@ -1,4 +1,5 @@
 #include "common.h"
+#include "memory/tlb.h"
 #include "memory/cache.h"
 #include "nemu.h"
 #include "burst.h"
@@ -19,6 +20,9 @@ hwaddr_t page_translate(lnaddr_t addr) {
     uint32_t page = (addr >> 12) & 0x3ff;
     uint32_t bias = addr & 0xfff;
 
+    int i = read_tlb(addr);
+    if (i != -1) return (tlb[i].page_num << 12) + bias;
+
     uint32_t dir_start = cpu.cr3.page_directory_base;
     uint32_t dir_position = (dir_start << 12) + (dir << 2);
     Page_Descriptor first_content;
@@ -31,6 +35,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
     Assert(second_content.p == 1, "Page unavailable");
     uint32_t addr_start = second_content.addr;
     hwaddr_t hwaddr = (addr_start << 12) + bias;
+    write_tlb(addr, hwaddr);
     return hwaddr;
   } else {
     return addr;
